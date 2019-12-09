@@ -67,33 +67,25 @@ class MiraClassifier:
           for l in self.legalLabels:
             label[l] = trainingData[i]*self.weights[l]
 
-            #print "1"
 
           y = label.argMax()
-          #print y
           yprime = trainingLabels[i]
-          #print yprime
-          f = trainingData[i]
-          #print f
+
           if(y != yprime):
 
-            #print "2"
-            #print "if statement"
-            tau = (((self.weights[yprime]-self.weights[y])*f)+1.0)/2.0/(f*f)
-            #print tau
-            mintau = min(tau, C)
-
-            #print mintau
-            #print "3"
+            num = (((self.weights[yprime]-self.weights[y])*trainingData[i])+1.0)
+            norm = trainingData[i]*trainingData[i]
+            tau = num/2.0/norm
+            mintau = min(tau, Cgrid)
 
             for k in trainingData[i].keys():
-              #print "4"
+
               adj[k] = trainingData[i][k]*mintau
-              #print "5"
+
             self.weights[y] -= adj
-            #print self.weights[y]
+
             self.weights[yprime] += adj
-            #print self.weights[yprime]
+
 
 
     #util.raiseNotDefined()
